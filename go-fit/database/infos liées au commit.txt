@@ -1,0 +1,6 @@
+1 - j'ai donné plus d'espace aux caractères
+2 - J'ai supprimé type abonnement chez client car il a déjà id abonnement et j'ai ajouté d'autres attributs 
+3 - j'ai ajouté mot de passe à entraineur client et membre
+4 - ajout d'un état à facture pour déterminer les payés des impayés ainsi qu'un état aux tables entraineurs, salle et client pour connaitre leurs disponibilités 
+5 - Ajustement sur entrainement pour servir de planning 
+
