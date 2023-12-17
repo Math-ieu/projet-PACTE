@@ -11,8 +11,8 @@
 /*==============================================================*/
 create table ABONNEMENT (
    ID_ABONNEMENT        SERIAL START 1 INCREMENT 1    not null,
-   NOM_ABONNEMENT       CHAR(20)             not null,
-   TYPE_ABONNEMENT      CHAR(20)             not null,
+   NOM_ABONNEMENT       CHAR(255)             not null,
+   TYPE_ABONNEMENT      CHAR(255)             not null,
    MONTANT_ABONNEMENT   DECIMAL              not null,
    constraint PK_ABONNEMENT primary key (ID_ABONNEMENT)
 );
@@ -23,6 +23,8 @@ create table ABONNEMENT (
 create unique index ABONNEMENT_PK on ABONNEMENT (
 ID_ABONNEMENT
 );
+
+
 
 /*==============================================================*/
 /* Table: AFFECTER                                              */
@@ -93,12 +95,23 @@ ID_SESSION_ENTRAINEMENT
 /*==============================================================*/
 create table CLIENT (
    NOM_CLIENT           CHAR(30)             null,
+   PRENOM               CHAR(50),
+   MOT_DE_PASSE         CHAR(30),
    ID_CLIENT            SERIAL START 1 INCREMENT 1                not null,
    ID_ABONNEMENT        INT4                 null,
    ID_EMPLOYE           INT4                 null,
    ID_ENTRAINEUR        INT4                 null,
    PHOTO_CLIENT         BYTEA           null,
-   TYPE_ABONNEMENT      CHAR(20)             null,
+   TELEPHONE_CLIENT     CHAR(15),
+   DATE_NAISSANCE       DATE,
+   SEXE                 CHAR(1),
+   POIDS                DECIMAL,
+   TAILLE               DECIMAL,
+   DATE_INSCRIPTION     DATE,
+   ETAT                 CHAR(1),
+   MOTIVATION           TEXT,
+   OBJECTIF             CHAR(50),
+   TYPE_ENTRAINEMENT    CHAR(1),
    ADRESSE_CLIENT       CHAR(50)             null,
    constraint PK_CLIENT primary key (ID_CLIENT)
 );
@@ -154,6 +167,7 @@ create table ENTRAINEMENT (
    ID_ENTRAINEUR        INT4                 not null,
    ID_RAPPORT           INT4                 not null,
    DATE_SESSION         DATE                 null,
+   JOUR_DE_LA_SEMAINE   CHAR(10),
    DEBUT                TIME                 null,
    FIN                  TIME                 null,
    NOM_SESSION          CHAR(20)             null,
@@ -203,7 +217,9 @@ create table ENTRAINEUR (
    ID_ENTRAINEUR        SERIAL START 1 INCREMENT 1 not null,
    NOM_EMPLOYE          CHAR(50)             not null,
    PRENOM_EMPLOYE       VARCHAR(50)          null,
+   MOT_DE_PASSE         CHAR(30),
    PHOTO_EMPLOYE        BYTEA            null,
+   ETAT                 CHAR(1),
    ADRESSE_EMPLOYE      CHAR(50)             null,
    PHRASE_ACCROCHE_ENTRAINEUR CHAR(100)            null,
    constraint PK_ENTRAINEUR primary key (ID_EMPLOYE, ID_ENTRAINEUR)
@@ -260,6 +276,7 @@ create table FACTURE (
    NOM_FACTURE          CHAR(30)             not null,
    MONTANT_FACTURE      DECIMAL              null,
    DATE_LIMITE_FACTURE  DATE                 null,
+   ETAT_FACTURE         CHAR(1),
    constraint PK_FACTURE primary key (ID_FACTURE)
 );
 
@@ -285,6 +302,7 @@ create table GESTIONNAIRE (
    ID_GESTIONNAIRE      SERIAL START 1 INCREMENT 1 not null,
    NOM_EMPLOYE          CHAR(50)             not null,
    PRENOM_EMPLOYE       VARCHAR(50)          null,
+   MOT_DE_PASSE         CHAR(30),
    PHOTO_EMPLOYE        BYTEA           null,
    ADRESSE_EMPLOYE      CHAR(50)             null,
    constraint PK_GESTIONNAIRE primary key (ID_EMPLOYE, ID_GESTIONNAIRE)
@@ -355,6 +373,7 @@ ID_RAPPORT
 create table SALLE (
    ID_SALLE             SERIAL START 1 INCREMENT 1    not null,
    NOM_SALLE            CHAR(20)             not null,
+   ETAT                 CHAR(1),
    constraint PK_SALLE primary key (ID_SALLE)
 );
 
