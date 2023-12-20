@@ -201,60 +201,30 @@ class Employe {
 }
 
 class Entrainement {
-  constructor(
-    idSessionEntrainement,
-    gesIdEmploye,
-    idGestionnaire,
-    idSalle,
-    idEmploye,
-    idEntraineur,
-    idRapport,
-    dateSession,
-    debut,
-    fin,
-    nomSession
-  ) {
-    this.idSessionEntrainement = idSessionEntrainement;
-    this.gesIdEmploye = gesIdEmploye;
-    this.idGestionnaire = idGestionnaire;
-    this.idSalle = idSalle;
-    this.idEmploye = idEmploye;
-    this.idEntraineur = idEntraineur;
-    this.idRapport = idRapport;
-    this.dateSession = dateSession;
+  constructor(id_session_entrainement, id_gestionnaire, id_salle, id_entraineur, id_rapport, date_session, jour_de_la_semaine, debut, fin, nom_session) {
+    this.id_session_entrainement = id_session_entrainement;
+    this.id_gestionnaire = id_gestionnaire;
+    this.id_salle = id_salle;
+    this.id_entraineur = id_entraineur;
+    this.id_rapport = id_rapport;
+    this.date_session = date_session;
+    this.jour_de_la_semaine = jour_de_la_semaine;
     this.debut = debut;
     this.fin = fin;
-    this.nomSession = nomSession;
+    this.nom_session = nom_session;
+  }
+  createEntrainement() {
+
+  }
+  deleteEntrainelent() {
   }
 
-  static createEntrainement(
-    idSessionEntrainement,
-    gesIdEmploye,
-    idGestionnaire,
-    idSalle,
-    idEmploye,
-    idEntraineur,
-    idRapport,
-    dateSession,
-    debut,
-    fin,
-    nomSession
-  ) {
-    return new Entrainement(
-      idSessionEntrainement,
-      gesIdEmploye,
-      idGestionnaire,
-      idSalle,
-      idEmploye,
-      idEntraineur,
-      idRapport,
-      dateSession,
-      debut,
-      fin,
-      nomSession
-    );
+  updateEntrainement() {
+
   }
+
 }
+
 
 class Entraineur {
   constructor(
