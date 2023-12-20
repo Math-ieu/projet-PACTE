@@ -79,8 +79,7 @@ class Affecter {
   }
 
   static async updateAffecter() {
-    this.deleteAffecter();
-    this.createAffecter();
+
   }
 }
 
@@ -106,8 +105,7 @@ class Assister {
   }
 
   static async updateAssister() {
-    this.deleteAssister();
-    this.createAssister();
+
   }
 }
 
@@ -157,8 +155,7 @@ class Client {
   }
 
   static async updateClient() {
-    this.deleteClient();
-    this.createClient();
+
   }
 }
 
@@ -195,18 +192,15 @@ class Employe {
   }
 
   static updateEmploye() {
-    this.deleteEmploye();
-    this.createEmploye();
+
   }
 }
 
 class Entrainement {
-  constructor(id_session_entrainement, id_gestionnaire, id_salle, id_entraineur, id_rapport, date_session, jour_de_la_semaine, debut, fin, nom_session) {
-    this.id_session_entrainement = id_session_entrainement;
+  constructor(id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session) {
     this.id_gestionnaire = id_gestionnaire;
     this.id_salle = id_salle;
     this.id_entraineur = id_entraineur;
-    this.id_rapport = id_rapport;
     this.date_session = date_session;
     this.jour_de_la_semaine = jour_de_la_semaine;
     this.debut = debut;
@@ -217,19 +211,134 @@ class Entrainement {
     await client.connect();
     await client.query(
       `INSERT INTO entrainement (id_gestionnaire, id_salle, id_entraineur,date_session, jour_de_la_semaine, debut, fin, nom_session)  
-      value ($1,$2,$3)`,
-      [this.nomEmploye, this.prenomEmploye, this.adresseEmploye]
+      value ($1,$2,$3,$4,$5,$6,$7,$8)`,
+      [this.id_gestionnaire, this.id_salle, this.id_entraineur, this.date_session, this.jour_de_la_semaine, this.debut, this.fin, this.nom_session]
     );
     client.end();
 
   }
-  deleteEntrainelent() {
+  async deleteEntrainelent() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM entrainement WHERE id_gestionnaire = $1 AND nom_session = $2 AND date_session = $3 AND debut = $4 AND id_salle = $5`,
+      [this.id_gestionnaire, this.nom_session, this.date_session, this.debut, this.id_salle]
+    )
+    client.end();
+
   }
 
-  updateEntrainement() {
+  async updateEntrainement(id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_session_entrainement FROM entrainement WHERE id_gestionnaire = $1 AND id_salle = $2 AND date_session = $3 AND debut = $4 AND nom_session = $5 `,
+      [this.id_gestionnaire, this.id_salle, this.date_session, this.debut, this.nom_session],
+    );
+
+    id = res[0].id_session_entrainement;
+
+    await client.query('UPDATE entrainement SET id_gestionnaire = $1, id_salle = $2, id_entraineur = $3,date_session = $4, jour_de_la_semaine = $5, debut = $6, fin = $7, nom_session = $8 WHERE id_session_entrainement = $9',
+      [id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session, id]);
 
   }
 
 }
+
+
+class Entraineur {
+  constructor(id_entraineur, id_employe, adresse_mail_entraineur, mot_de_passe, etat, phrase_accroche_entraineur) {
+    this.id_entraineur = id_entraineur;
+    this.id_employe = id_employe;
+    this.adresse_mail_entraineur = adresse_mail_entraineur;
+    this.mot_de_passe = mot_de_passe;
+    this.etat = etat;
+    this.phrase_accroche_entraineur = phrase_accroche_entraineur;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table ENTRAINEUR
+}
+
+class Equipement {
+  constructor(id_equipement, id_gestionnaire, nom_equipement, qte_equipement, etat_equipement, date_derniere_maintenance) {
+    this.id_equipement = id_equipement;
+    this.id_gestionnaire = id_gestionnaire;
+    this.nom_equipement = nom_equipement;
+    this.qte_equipement = qte_equipement;
+    this.etat_equipement = etat_equipement;
+    this.date_derniere_maintenance = date_derniere_maintenance;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table EQUIPEMENT
+}
+
+class Facture {
+  constructor(id_facture, nom_facture, montant_facture, date_limite_facture, etat_facture) {
+    this.id_facture = id_facture;
+    this.nom_facture = nom_facture;
+    this.montant_facture = montant_facture;
+    this.date_limite_facture = date_limite_facture;
+    this.etat_facture = etat_facture;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table FACTURE
+}
+
+class Gestionnaire {
+  constructor(id_gestionnaire, id_employe, adresse_mail_gestionnaire, mot_de_passe) {
+    this.id_gestionnaire = id_gestionnaire;
+    this.id_employe = id_employe;
+    this.adresse_mail_gestionnaire = adresse_mail_gestionnaire;
+    this.mot_de_passe = mot_de_passe;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table GESTIONNAIRE
+}
+
+class Paiement {
+  constructor(id_paiement, id_facture, id_client, nom_paiement, montant_paiement, date_paiement) {
+    this.id_paiement = id_paiement;
+    this.id_facture = id_facture;
+    this.id_client = id_client;
+    this.nom_paiement = nom_paiement;
+    this.montant_paiement = montant_paiement;
+    this.date_paiement = date_paiement;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table PAIEMENT
+}
+
+class Rapport {
+  constructor(id_rapport, id_session_entrainement, nom_rapport, fichier_rapport, date_rapport) {
+    this.id_rapport = id_rapport;
+    this.id_session_entrainement = id_session_entrainement;
+    this.nom_rapport = nom_rapport;
+    this.fichier_rapport = fichier_rapport;
+    this.date_rapport = date_rapport;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table RAPPORT
+}
+
+class Salle {
+  constructor(id_salle, nom_salle, etat) {
+    this.id_salle = id_salle;
+    this.nom_salle = nom_salle;
+    this.etat = etat;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table SALLE
+}
+
+class Statistique {
+  constructor(id_statistique, id_rapport, nom_statistique, fichier_statistique) {
+    this.id_statistique = id_statistique;
+    this.id_rapport = id_rapport;
+    this.nom_statistique = nom_statistique;
+    this.fichier_statistique = fichier_statistique;
+  }
+
+  // Implémentez ici les méthodes CRUD pour la table STATISTIQUE
+}
+
 
 
