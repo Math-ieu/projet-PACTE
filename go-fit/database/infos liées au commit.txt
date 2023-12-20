@@ -4,3 +4,4 @@
 4 - ajout d'un état à facture pour déterminer les payés des impayés ainsi qu'un état aux tables entraineurs, salle et client pour connaitre leurs disponibilités 
 5 - Ajustement sur entrainement pour servir de planning 
 
+

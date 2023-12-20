@@ -16,12 +16,10 @@ const client = require("./connection");
 
 class Abonnement {
   constructor(
-    idAbonnement,
-    nomAbonnement = "null",
+    nomAbonnement,
     typeAbonnement = "null",
     montantAbonnement = "null"
   ) {
-    this.idAbonnement = idAbonnement;
     this.nomAbonnement = nomAbonnement;
     this.typeAbonnement = typeAbonnement;
     this.montantAbonnement = montantAbonnement;
@@ -35,6 +33,21 @@ class Abonnement {
     );
     client.end();
   }
+
+  static async deleteAbonnement() {
+    let id;
+    await client.connect();
+    await client.query(
+      `SELECT id_abonnement FROM abonnement WHERE nom_abonnement = $1`, [this.nomAbonnement], (err, res) => {
+        id = res;
+      }
+    );
+    await client.query(
+      `DELETE FROM abonnement WHERE id_abonnement = $1`, [id]
+    );
+    client.end();
+
+  }
 }
 
 class Affecter {
@@ -45,18 +58,29 @@ class Affecter {
     this.dureeAffecter = dureeAffecter;
   }
 
-  static createAffecter(
-    idEquipement,
-    idSessionEntrainement,
-    qteAffecter,
-    dureeAffecter
+  static async createAffecter(
   ) {
-    return new Affecter(
-      idEquipement,
-      idSessionEntrainement,
-      qteAffecter,
-      dureeAffecter
+    await client.connect();
+    await client.query(
+      `insert into affecter  value ($1,$2,$3;$4)`,
+      [this.idEquipement, this.idSessionEntrainement, this.qteAffecter, this.dureeAffecter]
     );
+    client.end();
+
+  }
+
+  static async deleteAffecter() {
+
+    await client.connect();
+    await client.query(
+      `DELETE FROM affecter WHERE id_equipement = $1 AND id_session_entrainement = $2`, [this.idEquipement, this.idSessionEntrainement]
+    );
+    client.end();
+  }
+
+  static async updateAffecter() {
+    this.deleteAffecter();
+    this.createAffecter();
   }
 }
 
@@ -66,63 +90,80 @@ class Assister {
     this.idSessionEntrainement = idSessionEntrainement;
   }
 
-  static createAssister(idClient, idSessionEntrainement) {
-    return new Assister(idClient, idSessionEntrainement);
+  static async createAssister() {
+    await client.connect();
+    await client.query(
+      `insert into assister  value ($1,$2)`,
+      [this.idClient, this.idSessionEntrainement]
+    );
+    client.end();
+  }
+  static async deleteAssister() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM assister WHERE id_client = $1 AND id_session_entrainement = $2`, [this.idClient, this.idSessionEntrainement]
+    )
+  }
+
+  static async updateAssister() {
+    this.deleteAssister();
+    this.createAssister();
   }
 }
 
 class Client {
-  constructor(
-    nomClient,
-    idClient,
-    idAbonnement,
-    idEmploye,
-    idEntraineur,
-    photoClient,
-    typeAbonnement,
-    adresseClient
-  ) {
-    this.nomClient = nomClient;
-    this.idClient = idClient;
-    this.idAbonnement = idAbonnement;
-    this.idEmploye = idEmploye;
-    this.idEntraineur = idEntraineur;
-    this.photoClient = photoClient;
-    this.typeAbonnement = typeAbonnement;
-    this.adresseClient = adresseClient;
+  constructor(nom_client, prenom, mot_de_passe, id_abonnement, id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat, motivation, objectif, type_entrainement, adresse_client) {
+    this.nom_client = nom_client;
+    this.prenom = prenom;
+    this.mot_de_passe = mot_de_passe;
+    this.id_abonnement = id_abonnement;
+    this.id_entraineur = id_entraineur;
+    this.photo_client = photo_client;
+    this.telephone_client = telephone_client;
+    this.date_naissance = date_naissance;
+    this.sexe = sexe;
+    this.poids = poids;
+    this.taille = taille;
+    this.date_inscription = date_inscription;
+    this.etat = etat;
+    this.motivation = motivation;
+    this.objectif = objectif;
+    this.type_entrainement = type_entrainement;
+    this.adresse_client = adresse_client;
   }
 
-  static createClient(
-    nomClient,
-    idClient,
-    idAbonnement,
-    idEmploye,
-    idEntraineur,
-    photoClient,
-    typeAbonnement,
-    adresseClient
-  ) {
-    return new Client(
-      nomClient,
-      idClient,
-      idAbonnement,
-      idEmploye,
-      idEntraineur,
-      photoClient,
-      typeAbonnement,
-      adresseClient
+  static async createClient() {
+    await client.connect();
+    await client.query(
+      `insert into client(nom_client, prenom, mot_de_passe, id_abonnement,id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat, motivation, objectif, type_entrainement, adresse_client) 
+       value ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`,
+      [this.nom_client, this.prenom, this.mot_de_passe, this.id_abonnement, this.id_entraineur, this.photo_client, this.telephone_client, this.date_naissance, this.sexe, this.poids, this.taille, this.date_inscription, this.etat, this.motivation, this.objectif, this.type_entrainement, this.adresse_client]
     );
+    client.end();
+  }
+
+  static async deleteClient() {
+    let id;
+    await client.connect();
+    await client.query(
+      `SELECT id_client FROM client WHERE nom_client = $1 AND prenom = $2 AND adresse_client = $3 `, [this.nom_client, this.prenom, this.adresse_client], (err, res) => {
+        id = res;
+      }
+    );
+    await client.query(
+      `DELETE FROM client WHERE id_client = $1`, [id]
+    );
+    client.end();
+  }
+
+  static async updateClient() {
+    this.deleteClient();
+    this.createClient();
   }
 }
 
 class Employe {
-  constructor(
-    idEmploye,
-    nomEmploye,
-    prenomEmploye,
-    photoEmploye,
-    adresseEmploye
-  ) {
+  constructor(idEmploye, nomEmploye, prenomEmploye, photoEmploye = "null", adresseEmploye) {
     this.idEmploye = idEmploye;
     this.nomEmploye = nomEmploye;
     this.prenomEmploye = prenomEmploye;
@@ -130,20 +171,32 @@ class Employe {
     this.adresseEmploye = adresseEmploye;
   }
 
-  static createEmploye(
-    idEmploye,
-    nomEmploye,
-    prenomEmploye,
-    photoEmploye,
-    adresseEmploye
-  ) {
-    return new Employe(
-      idEmploye,
-      nomEmploye,
-      prenomEmploye,
-      photoEmploye,
-      adresseEmploye
+  static async createEmploye() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO employe (nom_employe, prenom_employe,adresse_employe)  value ($1,$2,$3)`,
+      [this.nomEmploye, this.prenomEmploye, this.adresseEmploye]
     );
+    client.end();
+  }
+
+  static async deleteEmploye() {
+    let id;
+    await client.connect();
+    await client.query(
+      `SELECT id_employe FROM employe WHERE nom_employe = $1 AND prenom_employe = $2 AND adresse_employe = $3 `, [this.nomEmploye, this.prenomEmploye, this.adresseEmploye], (err, res) => {
+        id = res;
+      }
+    );
+    await client.query(
+      `DELETE FROM employe WHERE id_employe = $1`, [id]
+    )
+    client.end();
+  }
+
+  static updateEmploye() {
+    this.deleteEmploye();
+    this.createEmploye();
   }
 }
 
