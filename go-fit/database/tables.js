@@ -48,8 +48,26 @@ class Abonnement {
     client.end();
 
   }
-}
+  async updateAbonnement(
+    nomAbonnement = this.nomAbonnement,
+    typeAbonnement = this.typeAbonnement,
+    montantAbonnement = this.montantAbonnement
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_abonnement FROM abonnement WHERE nomAbonnement = $1`,
+      [this.nomAbonnement],
+    );
 
+    id = res[0].id_abonnement;
+
+    await client.query('UPDATE abonnement SET nomAbonnement = $1, typeAbonnement = $2, montantAbonnement = $3 WHERE id_abonnement = $4',
+      [nomAbonnement, typeAbonnement, montantAbonnement, id]);
+    client.end();
+  }
+}
+;
 class Affecter {
   constructor(idEquipement, idSessionEntrainement, qteAffecter, dureeAffecter) {
     this.idEquipement = idEquipement;
@@ -78,11 +96,27 @@ class Affecter {
     client.end();
   }
 
-  static async updateAffecter() {
+  async updateAffecter(
+    idEquipement = this.idEquipement,
+    idSessionEntrainement = this.idSessionEntrainement,
+    qteAffecter = this.qteAffecter,
+    dureeAffecter = this.dureeAffecter
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_affecter FROM affecter WHERE idEquipement = $1 AND idSessionEntrainement = $2`,
+      [this.idEquipement, this.idSessionEntrainement],
+    );
 
+    id = res[0].id_affecter;
+
+    await client.query('UPDATE affecter SET idEquipement = $1, idSessionEntrainement = $2, qteAffecter = $3, dureeAffecter = $4 WHERE id_affecter = $5',
+      [idEquipement, idSessionEntrainement, qteAffecter, dureeAffecter, id]);
+    client.end();
   }
 }
-
+;
 class Assister {
   constructor(idClient, idSessionEntrainement) {
     this.idClient = idClient;
@@ -104,11 +138,25 @@ class Assister {
     )
   }
 
-  static async updateAssister() {
+  async updateAssister(
+    idClient = this.idClient,
+    idSessionEntrainement = this.idSessionEntrainement
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_assister FROM assister WHERE idClient = $1 AND idSessionEntrainement = $2`,
+      [this.idClient, this.idSessionEntrainement],
+    );
 
+    id = res[0].id_assister;
+
+    await client.query('UPDATE assister SET idClient = $1, idSessionEntrainement = $2 WHERE id_assister = $3',
+      [idClient, idSessionEntrainement, id]);
+    client.end();
   }
 }
-
+;
 class Client {
   constructor(nom_client, prenom, mot_de_passe, id_abonnement, id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat, motivation, objectif, type_entrainement, adresse_mail_client, adresse_client) {
     this.nom_client = nom_client;
@@ -158,10 +206,9 @@ class Client {
 
   }
 }
-
+;
 class Employe {
-  constructor(idEmploye, nomEmploye, prenomEmploye, photoEmploye = "null", adresseEmploye) {
-    this.idEmploye = idEmploye;
+  constructor(nomEmploye, prenomEmploye, photoEmploye = "null", adresseEmploye) {
     this.nomEmploye = nomEmploye;
     this.prenomEmploye = prenomEmploye;
     this.photoEmploye = photoEmploye;
@@ -190,11 +237,27 @@ class Employe {
     client.end();
   }
 
-  static updateEmploye() {
+  async updateEmploye(
+    nomEmploye = this.nomEmploye,
+    prenomEmploye = this.prenomEmploye,
+    photoEmploye = this.photoEmploye,
+    adresseEmploye = this.adresseEmploye
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_employe FROM employe WHERE nomEmploye = $1 AND prenomEmploye = $2`,
+      [this.nomEmploye, this.prenomEmploye],
+    );
 
+    id = res[0].id_employe;
+
+    await client.query('UPDATE employe SET nomEmploye = $1, prenomEmploye = $2, photoEmploye = $3, adresseEmploye = $4 WHERE id_employe = $5',
+      [nomEmploye, prenomEmploye, photoEmploye, adresseEmploye, id]);
+    client.end();
   }
 }
-
+;
 class Entrainement {
   constructor(id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session) {
     this.id_gestionnaire = id_gestionnaire;
@@ -253,7 +316,7 @@ class Entrainement {
 
 }
 
-
+;
 class Entraineur {
   constructor(id_employe, adresse_mail_entraineur, mot_de_passe, etat, phrase_accroche_entraineur) {
     this.id_employe = id_employe;
@@ -304,19 +367,55 @@ class Entraineur {
   }
 }
 
-
+;
 class Equipement {
-  constructor(id_equipement, id_gestionnaire, nom_equipement, qte_equipement, etat_equipement, date_derniere_maintenance) {
-    this.id_equipement = id_equipement;
-    this.id_gestionnaire = id_gestionnaire;
+  constructor(nom_equipement, qte_equipement, etat_equipement, date_derniere_maintenance) {
     this.nom_equipement = nom_equipement;
     this.qte_equipement = qte_equipement;
     this.etat_equipement = etat_equipement;
     this.date_derniere_maintenance = date_derniere_maintenance;
+  };
+
+  async createEquipement() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO equipement (nom_equipement, qte_equipement, etat_equipement, date_derniere_maintenance)  
+      value ($1,$2,$3,$4)`,
+      [this.nom_equipement, this.qte_equipement, this.etat_equipement, this.date_derniere_maintenance]
+    );
+    client.end();
+  };
+
+  async deleteEquipement() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM equipement WHERE nom_equipement = $1`,
+      [this.nom_equipement]
+    )
+    client.end();
   }
 
-  // Implémentez ici les méthodes CRUD pour la table EQUIPEMENT
+  async updateEquipement(
+    nom_equipement = this.nom_equipement,
+    qte_equipement = this.qte_equipement,
+    etat_equipement = this.etat_equipement,
+    date_derniere_maintenance = this.date_derniere_maintenance
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_equipement FROM equipement WHERE nom_equipement = $1`,
+      [this.nom_equipement],
+    );
+
+    id = res[0].id_equipement;
+
+    await client.query('UPDATE equipement SET nom_equipement = $1, qte_equipement = $2, etat_equipement = $3, date_derniere_maintenance = $4 WHERE id_equipement = $5',
+      [nom_equipement, qte_equipement, etat_equipement, date_derniere_maintenance, id]);
+    client.end();
+  }
 }
+;
 
 class Facture {
   constructor(nom_facture, montant_facture, date_limite_facture, etat_facture) {
@@ -375,7 +474,7 @@ class Gestionnaire {
   }
 }
 
-
+;
 class Paiement {
   constructor(id_facture, id_client, nom_paiement, montant_paiement, date_paiement) {
     this.id_facture = id_facture;
@@ -387,7 +486,7 @@ class Paiement {
 
   // Implémentez ici les méthodes CRUD pour la table PAIEMENT
 }
-
+;
 class Rapport {
   constructor(id_rapport, id_session_entrainement, nom_rapport, fichier_rapport, date_rapport) {
     this.id_rapport = id_rapport;
@@ -397,7 +496,7 @@ class Rapport {
     this.date_rapport = date_rapport;
   }
 }
-
+;
 // Implémentez ici les méthodes CRUD pour la table RAPP
 class Salle {
   constructor(id_salle, nom_salle, etat) {
@@ -408,7 +507,7 @@ class Salle {
 
   // Implémentez ici les méthodes CRUD pour la table SALLE
 }
-
+;
 class Statistique {
   constructor(id_rapport, nom_statistique, fichier_statistique) {
     this.id_rapport = id_rapport;
@@ -418,6 +517,5 @@ class Statistique {
 
   // Implémentez ici les méthodes CRUD pour la table STATISTIQUE
 }
-
-
+;
 
