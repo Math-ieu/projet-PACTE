@@ -227,7 +227,16 @@ class Entrainement {
 
   }
 
-  async updateEntrainement(id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session) {
+  async updateEntrainement(
+    id_gestionnaire = this.id_gestionnaire,
+    id_salle = this.id_salle,
+    id_entraineur = this.id_entraineur,
+    date_session = this.date_session,
+    jour_de_la_semaine = this.jour_de_la_semaine,
+    debut = this.debut,
+    fin = this.fin,
+    nom_session = this.nom_session
+  ) {
     let id;
     await client.connect();
     const res = await client.query(
@@ -239,6 +248,7 @@ class Entrainement {
 
     await client.query('UPDATE entrainement SET id_gestionnaire = $1, id_salle = $2, id_entraineur = $3,date_session = $4, jour_de_la_semaine = $5, debut = $6, fin = $7, nom_session = $8 WHERE id_session_entrainement = $9',
       [id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session, id]);
+    client.end();
 
   }
 
@@ -246,8 +256,7 @@ class Entrainement {
 
 
 class Entraineur {
-  constructor(id_entraineur, id_employe, adresse_mail_entraineur, mot_de_passe, etat, phrase_accroche_entraineur) {
-    this.id_entraineur = id_entraineur;
+  constructor(id_employe, adresse_mail_entraineur, mot_de_passe, etat, phrase_accroche_entraineur) {
     this.id_employe = id_employe;
     this.adresse_mail_entraineur = adresse_mail_entraineur;
     this.mot_de_passe = mot_de_passe;
@@ -255,8 +264,47 @@ class Entraineur {
     this.phrase_accroche_entraineur = phrase_accroche_entraineur;
   }
 
-  // Implémentez ici les méthodes CRUD pour la table ENTRAINEUR
+  async createEntraineur() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO entraineur (id_employe, adresse_mail_entraineur, mot_de_passe, etat, phrase_accroche_entraineur)  
+      value ($1,$2,$3,$4,$5)`,
+      [this.id_employe, this.adresse_mail_entraineur, this.mot_de_passe, this.etat, this.phrase_accroche_entraineur]
+    );
+    client.end();
+  }
+
+  async deleteEntraineur() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM entraineur WHERE id_employe = $1 AND adresse_mail_entraineur = $2`,
+      [this.id_employe, this.adresse_mail_entraineur]
+    )
+    client.end();
+  }
+
+  async updateEntraineur(
+    id_employe = this.id_employe,
+    adresse_mail_entraineur = this.adresse_mail_entraineur,
+    mot_de_passe = this.mot_de_passe,
+    etat = this.etat,
+    phrase_accroche_entraineur = this.phrase_accroche_entraineur
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_entraineur FROM entraineur WHERE id_employe = $1 AND adresse_mail_entraineur = $2`,
+      [this.id_employe, this.adresse_mail_entraineur],
+    );
+
+    id = res[0].id_entraineur;
+
+    await client.query('UPDATE entraineur SET id_employe = $1, adresse_mail_entraineur = $2, mot_de_passe = $3, etat = $4, phrase_accroche_entraineur = $5 WHERE id_entraineur = $6',
+      [id_employe, adresse_mail_entraineur, mot_de_passe, etat, phrase_accroche_entraineur, id]);
+    client.end();
+  }
 }
+
 
 class Equipement {
   constructor(id_equipement, id_gestionnaire, nom_equipement, qte_equipement, etat_equipement, date_derniere_maintenance) {
@@ -272,8 +320,7 @@ class Equipement {
 }
 
 class Facture {
-  constructor(id_facture, nom_facture, montant_facture, date_limite_facture, etat_facture) {
-    this.id_facture = id_facture;
+  constructor(nom_facture, montant_facture, date_limite_facture, etat_facture) {
     this.nom_facture = nom_facture;
     this.montant_facture = montant_facture;
     this.date_limite_facture = date_limite_facture;
@@ -284,19 +331,54 @@ class Facture {
 }
 
 class Gestionnaire {
-  constructor(id_gestionnaire, id_employe, adresse_mail_gestionnaire, mot_de_passe) {
-    this.id_gestionnaire = id_gestionnaire;
+  constructor(id_employe, adresse_mail_gestionnaire, mot_de_passe) {
     this.id_employe = id_employe;
     this.adresse_mail_gestionnaire = adresse_mail_gestionnaire;
     this.mot_de_passe = mot_de_passe;
   }
 
-  // Implémentez ici les méthodes CRUD pour la table GESTIONNAIRE
+  async createGestionnaire() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO gestionnaire (id_employe, adresse_mail_gestionnaire, mot_de_passe)  
+      value ($1,$2,$3)`,
+      [this.id_employe, this.adresse_mail_gestionnaire, this.mot_de_passe]
+    );
+    client.end();
+  }
+
+  async deleteGestionnaire() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM gestionnaire WHERE id_employe = $1 AND adresse_mail_gestionnaire = $2`,
+      [this.id_employe, this.adresse_mail_gestionnaire]
+    )
+    client.end();
+  }
+
+  async updateGestionnaire(
+    id_employe = this.id_employe,
+    adresse_mail_gestionnaire = this.adresse_mail_gestionnaire,
+    mot_de_passe = this.mot_de_passe
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_gestionnaire FROM gestionnaire WHERE id_employe = $1 AND adresse_mail_gestionnaire = $2`,
+      [this.id_employe, this.adresse_mail_gestionnaire],
+    );
+
+    id = res[0].id_gestionnaire;
+
+    await client.query('UPDATE gestionnaire SET id_employe = $1, adresse_mail_gestionnaire = $2, mot_de_passe = $3 WHERE id_gestionnaire = $4',
+      [id_employe, adresse_mail_gestionnaire, mot_de_passe, id]);
+    client.end();
+  }
 }
 
+
 class Paiement {
-  constructor(id_paiement, id_facture, id_client, nom_paiement, montant_paiement, date_paiement) {
-    this.id_paiement = id_paiement;
+  constructor(id_facture, id_client, nom_paiement, montant_paiement, date_paiement) {
     this.id_facture = id_facture;
     this.id_client = id_client;
     this.nom_paiement = nom_paiement;
@@ -315,10 +397,9 @@ class Rapport {
     this.fichier_rapport = fichier_rapport;
     this.date_rapport = date_rapport;
   }
-
-  // Implémentez ici les méthodes CRUD pour la table RAPPORT
 }
 
+// Implémentez ici les méthodes CRUD pour la table RAPP
 class Salle {
   constructor(id_salle, nom_salle, etat) {
     this.id_salle = id_salle;
@@ -330,8 +411,7 @@ class Salle {
 }
 
 class Statistique {
-  constructor(id_statistique, id_rapport, nom_statistique, fichier_statistique) {
-    this.id_statistique = id_statistique;
+  constructor(id_rapport, nom_statistique, fichier_statistique) {
     this.id_rapport = id_rapport;
     this.nom_statistique = nom_statistique;
     this.fichier_statistique = fichier_statistique;
