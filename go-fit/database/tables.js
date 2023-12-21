@@ -110,7 +110,7 @@ class Assister {
 }
 
 class Client {
-  constructor(nom_client, prenom, mot_de_passe, id_abonnement, id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat, motivation, objectif, type_entrainement, adresse_client) {
+  constructor(nom_client, prenom, mot_de_passe, id_abonnement, id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat, motivation, objectif, type_entrainement, adresse_mail_client, adresse_client) {
     this.nom_client = nom_client;
     this.prenom = prenom;
     this.mot_de_passe = mot_de_passe;
@@ -127,6 +127,7 @@ class Client {
     this.motivation = motivation;
     this.objectif = objectif;
     this.type_entrainement = type_entrainement;
+    this.adresse_mail_client = adresse_mail_client
     this.adresse_client = adresse_client;
   }
 
@@ -134,8 +135,8 @@ class Client {
     await client.connect();
     await client.query(
       `insert into client(nom_client, prenom, mot_de_passe, id_abonnement,id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat, motivation, objectif, type_entrainement, adresse_client) 
-       value ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`,
-      [this.nom_client, this.prenom, this.mot_de_passe, this.id_abonnement, this.id_entraineur, this.photo_client, this.telephone_client, this.date_naissance, this.sexe, this.poids, this.taille, this.date_inscription, this.etat, this.motivation, this.objectif, this.type_entrainement, this.adresse_client]
+       value ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)`,
+      [this.nom_client, this.prenom, this.mot_de_passe, this.id_abonnement, this.id_entraineur, this.photo_client, this.telephone_client, this.date_naissance, this.sexe, this.poids, this.taille, this.date_inscription, this.etat, this.motivation, this.objectif, this.type_entrainement, this.adresse_mail_client, this.adresse_client]
     );
     client.end();
   }
@@ -143,11 +144,10 @@ class Client {
   static async deleteClient() {
     let id;
     await client.connect();
-    await client.query(
-      `SELECT id_client FROM client WHERE nom_client = $1 AND prenom = $2 AND adresse_client = $3 `, [this.nom_client, this.prenom, this.adresse_client], (err, res) => {
-        id = res;
-      }
+    const res = await client.query(
+      `SELECT id_client FROM client WHERE nom_client = $1 AND prenom = $2 AND adresse_mail_client = $3 `, [this.nom_client, this.prenom, this.adresse_mail_client]
     );
+    id = res[0].id_client;
     await client.query(
       `DELETE FROM client WHERE id_client = $1`, [id]
     );
@@ -180,11 +180,10 @@ class Employe {
   static async deleteEmploye() {
     let id;
     await client.connect();
-    await client.query(
-      `SELECT id_employe FROM employe WHERE nom_employe = $1 AND prenom_employe = $2 AND adresse_employe = $3 `, [this.nomEmploye, this.prenomEmploye, this.adresseEmploye], (err, res) => {
-        id = res;
-      }
+    const res = await client.query(
+      `SELECT id_employe FROM employe WHERE nom_employe = $1 AND prenom_employe = $2 AND adresse_employe = $3 `, [this.nomEmploye, this.prenomEmploye, this.adresseEmploye]
     );
+    id = res[0].id_employe;
     await client.query(
       `DELETE FROM employe WHERE id_employe = $1`, [id]
     )
