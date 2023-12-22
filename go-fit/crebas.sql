@@ -11,8 +11,8 @@
 /*==============================================================*/
 CREATE TABLE ABONNEMENT (
    ID_ABONNEMENT SERIAL START 1 INCREMENT 1 NOT NULL,
-   NOM_ABONNEMENT CHAR(255) NOT NULL,
-   TYPE_ABONNEMENT CHAR(255) NOT NULL,
+   NOM_ABONNEMENT CHAR(50) NOT NULL,
+   TYPE_ABONNEMENT CHAR(50) NOT NULL,
    MONTANT_ABONNEMENT DECIMAL NOT NULL,
    CONSTRAINT PK_ABONNEMENT PRIMARY KEY (ID_ABONNEMENT)
 );
@@ -32,29 +32,6 @@ CREATE TABLE AFFECTER (
    ID_SESSION_ENTRAINEMENT INT4 NULL,
    QTE_AFFECTER INT4 NULL,
    DUREE_AFFECTER TIME NULL,
-   CONSTRAINT PK_AFFECTER PRIMARY KEY (ID_EQUIPEMENT, ID_SESSION_ENTRAINEMENT)
-);
-
-/*==============================================================*/
-/* Index: AFFECTER_PK                                           */
-/*==============================================================*/
-CREATE UNIQUE INDEX AFFECTER_PK ON AFFECTER (
-ID_EQUIPEMENT,
-ID_SESSION_ENTRAINEMENT
-);
-
-/*==============================================================*/
-/* Index: AFFECTER_FK                                           */
-/*==============================================================*/
-CREATE INDEX AFFECTER_FK ON AFFECTER (
-ID_EQUIPEMENT
-);
-
-/*==============================================================*/
-/* Index: AFFECTER2_FK                                          */
-/*==============================================================*/
-CREATE INDEX AFFECTER2_FK ON AFFECTER (
-ID_SESSION_ENTRAINEMENT
 );
 
 /*==============================================================*/
@@ -63,30 +40,9 @@ ID_SESSION_ENTRAINEMENT
 CREATE TABLE ASSISTER (
    ID_CLIENT INT4 NULL,
    ID_SESSION_ENTRAINEMENT INT4 NULL,
-   CONSTRAINT PK_ASSISTER PRIMARY KEY (ID_CLIENT, ID_SESSION_ENTRAINEMENT)
 );
 
-/*==============================================================*/
-/* Index: ASSISTER_PK                                           */
-/*==============================================================*/
-CREATE UNIQUE INDEX ASSISTER_PK ON ASSISTER (
-ID_CLIENT,
-ID_SESSION_ENTRAINEMENT
-);
 
-/*==============================================================*/
-/* Index: ASSISTER_FK                                           */
-/*==============================================================*/
-CREATE INDEX ASSISTER_FK ON ASSISTER (
-ID_CLIENT
-);
-
-/*==============================================================*/
-/* Index: ASSISTER2_FK                                          */
-/*==============================================================*/
-CREATE INDEX ASSISTER2_FK ON ASSISTER (
-ID_SESSION_ENTRAINEMENT
-);
 
 /*==============================================================*/
 /* Table: CLIENT                                                */
@@ -132,7 +88,6 @@ ID_ABONNEMENT
 /* Index: ENTRAINER_FK                                          */
 /*==============================================================*/
 CREATE INDEX ENTRAINER_FK ON CLIENT (
-ID_EMPLOYE,
 ID_ENTRAINEUR
 );
 
@@ -164,7 +119,7 @@ CREATE TABLE ENTRAINEMENT (
    ID_SALLE INT4 NULL,
    ID_ENTRAINEUR INT4 NULL,
    DATE_SESSION DATE NULL,
-   JOUR_DE_LA_SEMAINE CHAR(10),
+   JOUR_DE_LA_SEMAINE CHAR(10) NOT NULL,
    DEBUT TIME NULL,
    FIN TIME NULL,
    NOM_SESSION CHAR(20) NULL,
@@ -215,7 +170,7 @@ CREATE TABLE ENTRAINEUR (
    ADRESSE_MAIL_ENTRAINEUR CHAR(50) NOT NULL,
    MOT_DE_PASSE CHAR(30),
    ETAT CHAR(1),
-   PHRASE_ACCROCHE_ENTRAINEUR CHAR(100) NULL,
+   PHRASE_ACCROCHE_ENTRAINEUR CHAR(255) NULL,
    CONSTRAINT PK_ENTRAINEUR PRIMARY KEY (ID_EMPLOYE, ID_ENTRAINEUR)
 );
 
@@ -403,24 +358,7 @@ ID_RAPPORT
 CREATE TABLE GERER (
    ID_EQUIPEMENT INT4 NOT NULL,
    ID_GESTIONNAIRE INT4 NOT NULL,
-   CONSTRAINT PK_GERER PRIMARY KEY (ID_EQUIPEMENT, ID_GESTIONNAIRE)
-);
-
-/*==============================================================*/
-/* Index: GERER_PK                                              */
-/*==============================================================*/
-CREATE UNIQUE INDEX GERER_PK ON GERER (
-ID_EQUIPEMENT,
-ID_GESTIONNAIRE
-);
-
-ALTER TABLE AFFECTER ADD CONSTRAINT FK_AFFECTER_AFFECTER_EQUIPEME FOREIGN KEY (ID_EQUIPEMENT) REFERENCES EQUIPEMENT (ID_EQUIPEMENT) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE AFFECTER ADD CONSTRAINT FK_AFFECTER_AFFECTER2_ENTRAINE FOREIGN KEY (ID_SESSION_ENTRAINEMENT) REFERENCES ENTRAINEMENT (ID_SESSION_ENTRAINEMENT) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE ASSISTER ADD CONSTRAINT FK_ASSISTER_ASSISTER_CLIENT FOREIGN KEY (ID_CLIENT) REFERENCES CLIENT (ID_CLIENT) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE ASSISTER ADD CONSTRAINT FK_ASSISTER_ASSISTER2_ENTRAINE FOREIGN KEY (ID_SESSION_ENTRAINEMENT) REFERENCES ENTRAINEMENT (ID_SESSION_ENTRAINEMENT) ON DELETE RESTRICT ON UPDATE RESTRICT;
+   );
 
 ALTER TABLE CLIENT ADD CONSTRAINT FK_CLIENT_ENTRAINER_ENTRAINE FOREIGN KEY (ID_ENTRAINEUR) REFERENCES ENTRAINEUR (ID_ENTRAINEUR) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

@@ -425,8 +425,46 @@ class Facture {
     this.etat_facture = etat_facture;
   }
 
-  // Implémentez ici les méthodes CRUD pour la table FACTURE
+  async createFacture() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO facture (nom_facture, montant_facture, date_limite_facture, etat_facture)  
+      value ($1,$2,$3,$4)`,
+      [this.nom_facture, this.montant_facture, this.date_limite_facture, this.etat_facture]
+    );
+    client.end();
+  }
+
+  async deleteFacture() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM facture WHERE nom_facture = $1`,
+      [this.nom_facture]
+    )
+    client.end();
+  }
+
+  async updateFacture(
+    nom_facture = this.nom_facture,
+    montant_facture = this.montant_facture,
+    date_limite_facture = this.date_limite_facture,
+    etat_facture = this.etat_facture
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_facture FROM facture WHERE nom_facture = $1`,
+      [this.nom_facture],
+    );
+
+    id = res[0].id_facture;
+
+    await client.query('UPDATE facture SET nom_facture = $1, montant_facture = $2, date_limite_facture = $3, etat_facture = $4 WHERE id_facture = $5',
+      [nom_facture, montant_facture, date_limite_facture, etat_facture, id]);
+    client.end();
+  }
 }
+
 
 class Gestionnaire {
   constructor(id_employe, adresse_mail_gestionnaire, mot_de_passe) {
@@ -484,8 +522,47 @@ class Paiement {
     this.date_paiement = date_paiement;
   }
 
-  // Implémentez ici les méthodes CRUD pour la table PAIEMENT
+  async createPaiement() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO paiement (id_facture, id_client, nom_paiement, montant_paiement, date_paiement)  
+      value ($1,$2,$3,$4,$5)`,
+      [this.id_facture, this.id_client, this.nom_paiement, this.montant_paiement, this.date_paiement]
+    );
+    client.end();
+  }
+
+  async deletePaiement() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM paiement WHERE id_facture = $1 AND id_client = $2`,
+      [this.id_facture, this.id_client]
+    )
+    client.end();
+  }
+
+  async updatePaiement(
+    id_facture = this.id_facture,
+    id_client = this.id_client,
+    nom_paiement = this.nom_paiement,
+    montant_paiement = this.montant_paiement,
+    date_paiement = this.date_paiement
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_paiement FROM paiement WHERE id_facture = $1 AND id_client = $2`,
+      [this.id_facture, this.id_client],
+    );
+
+    id = res[0].id_paiement;
+
+    await client.query('UPDATE paiement SET id_facture = $1, id_client = $2, nom_paiement = $3, montant_paiement = $4, date_paiement = $5 WHERE id_paiement = $6',
+      [id_facture, id_client, nom_paiement, montant_paiement, date_paiement, id]);
+    client.end();
+  }
 }
+
 ;
 class Rapport {
   constructor(id_rapport, id_session_entrainement, nom_rapport, fichier_rapport, date_rapport) {
@@ -495,18 +572,94 @@ class Rapport {
     this.fichier_rapport = fichier_rapport;
     this.date_rapport = date_rapport;
   }
+
+  async createRapport() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO rapport (id_rapport, id_session_entrainement, nom_rapport, fichier_rapport, date_rapport)  
+      value ($1,$2,$3,$4,$5)`,
+      [this.id_rapport, this.id_session_entrainement, this.nom_rapport, this.fichier_rapport, this.date_rapport]
+    );
+    client.end();
+  }
+
+  async deleteRapport() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM rapport WHERE id_rapport = $1 AND id_session_entrainement = $2`,
+      [this.id_rapport, this.id_session_entrainement]
+    )
+    client.end();
+  }
+
+  async updateRapport(
+    id_rapport = this.id_rapport,
+    id_session_entrainement = this.id_session_entrainement,
+    nom_rapport = this.nom_rapport,
+    fichier_rapport = this.fichier_rapport,
+    date_rapport = this.date_rapport
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_rapport FROM rapport WHERE id_rapport = $1 AND id_session_entrainement = $2`,
+      [this.id_rapport, this.id_session_entrainement],
+    );
+
+    id = res[0].id_rapport;
+
+    await client.query('UPDATE rapport SET id_rapport = $1, id_session_entrainement = $2, nom_rapport = $3, fichier_rapport = $4, date_rapport = $5 WHERE id_rapport = $6',
+      [id_rapport, id_session_entrainement, nom_rapport, fichier_rapport, date_rapport, id]);
+    client.end();
+  }
 }
+
 ;
 // Implémentez ici les méthodes CRUD pour la table RAPP
 class Salle {
-  constructor(id_salle, nom_salle, etat) {
-    this.id_salle = id_salle;
+  constructor(nom_salle, etat) {
     this.nom_salle = nom_salle;
     this.etat = etat;
   }
 
-  // Implémentez ici les méthodes CRUD pour la table SALLE
+  async createSalle() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO salle (nom_salle, etat)  
+      value ($1,$2)`,
+      [this.nom_salle, this.etat]
+    );
+    client.end();
+  }
+
+  async deleteSalle() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM salle WHERE nom_salle = $1`,
+      [this.nom_salle]
+    )
+    client.end();
+  }
+
+  async updateSalle(
+    nom_salle = this.nom_salle,
+    etat = this.etat
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_salle FROM salle WHERE nom_salle = $1`,
+      [this.nom_salle],
+    );
+
+    id = res[0].id_salle;
+
+    await client.query('UPDATE salle SET nom_salle = $1, etat = $2 WHERE id_salle = $3',
+      [nom_salle, etat, id]);
+    client.end();
+  }
 }
+
 ;
 class Statistique {
   constructor(id_rapport, nom_statistique, fichier_statistique) {
@@ -515,7 +668,44 @@ class Statistique {
     this.fichier_statistique = fichier_statistique;
   }
 
-  // Implémentez ici les méthodes CRUD pour la table STATISTIQUE
+  async createStatistique() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO statistique (id_rapport, nom_statistique, fichier_statistique)  
+      value ($1,$2,$3)`,
+      [this.id_rapport, this.nom_statistique, this.fichier_statistique]
+    );
+    client.end();
+  }
+
+  async deleteStatistique() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM statistique WHERE id_rapport = $1 AND nom_statistique = $2`,
+      [this.id_rapport, this.nom_statistique]
+    )
+    client.end();
+  }
+
+  async updateStatistique(
+    id_rapport = this.id_rapport,
+    nom_statistique = this.nom_statistique,
+    fichier_statistique = this.fichier_statistique
+  ) {
+    let id;
+    await client.connect();
+    const res = await client.query(
+      `SELECT id_statistique FROM statistique WHERE id_rapport = $1 AND nom_statistique = $2`,
+      [this.id_rapport, this.nom_statistique],
+    );
+
+    id = res[0].id_statistique;
+
+    await client.query('UPDATE statistique SET id_rapport = $1, nom_statistique = $2, fichier_statistique = $3 WHERE id_statistique = $4',
+      [id_rapport, nom_statistique, fichier_statistique, id]);
+    client.end();
+  }
 }
+
 ;
 
