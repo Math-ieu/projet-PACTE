@@ -1,18 +1,5 @@
 const client = require("./connection");
 
-(async () => {
-  await client.connect();
-  await client.query(
-    `select * from person where id_person = $1`,
-    [2],
-    (error, result) => {
-      if (!error) {
-        console.log(result.rows);
-      }
-      client.end();
-    }
-  );
-})();
 
 class Abonnement {
   constructor(
@@ -102,17 +89,9 @@ class Affecter {
     qteAffecter = this.qteAffecter,
     dureeAffecter = this.dureeAffecter
   ) {
-    let id;
     await client.connect();
-    const res = await client.query(
-      `SELECT id_affecter FROM affecter WHERE idEquipement = $1 AND idSessionEntrainement = $2`,
-      [this.idEquipement, this.idSessionEntrainement],
-    );
-
-    id = res[0].id_affecter;
-
     await client.query('UPDATE affecter SET idEquipement = $1, idSessionEntrainement = $2, qteAffecter = $3, dureeAffecter = $4 WHERE id_affecter = $5',
-      [idEquipement, idSessionEntrainement, qteAffecter, dureeAffecter, id]);
+      [idEquipement, idSessionEntrainement, qteAffecter, dureeAffecter]);
     client.end();
   }
 }
@@ -137,28 +116,27 @@ class Assister {
       `DELETE FROM assister WHERE id_client = $1 AND id_session_entrainement = $2`, [this.idClient, this.idSessionEntrainement]
     )
   }
-
-  async updateAssister(
-    idClient = this.idClient,
-    idSessionEntrainement = this.idSessionEntrainement
-  ) {
-    let id;
-    await client.connect();
-    const res = await client.query(
-      `SELECT id_assister FROM assister WHERE idClient = $1 AND idSessionEntrainement = $2`,
-      [this.idClient, this.idSessionEntrainement],
-    );
-
-    id = res[0].id_assister;
-
-    await client.query('UPDATE assister SET idClient = $1, idSessionEntrainement = $2 WHERE id_assister = $3',
-      [idClient, idSessionEntrainement, id]);
-    client.end();
-  }
 }
 ;
 class Client {
-  constructor(nom_client, prenom, mot_de_passe, id_abonnement, id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat, motivation, objectif, type_entrainement, adresse_mail_client, adresse_client) {
+  constructor(nom_client,
+    prenom,
+    mot_de_passe,
+    id_abonnement,
+    id_entraineur,
+    photo_client,
+    telephone_client,
+    date_naissance,
+    sexe,
+    poids,
+    taille,
+    date_inscription,
+    etat,
+    motivation,
+    objectif,
+    type_entrainement,
+    adresse_mail_client,
+    adresse_client) {
     this.nom_client = nom_client;
     this.prenom = prenom;
     this.mot_de_passe = mot_de_passe;
@@ -615,7 +593,6 @@ class Rapport {
 }
 
 ;
-// Implémentez ici les méthodes CRUD pour la table RAPP
 class Salle {
   constructor(nom_salle, etat) {
     this.nom_salle = nom_salle;
@@ -706,6 +683,32 @@ class Statistique {
     client.end();
   }
 }
-
 ;
+
+class Gerer {
+  constructor(id_equipement, id_gestionnaire) {
+    this.id_equipement = id_equipement;
+    this.id_gestionnaire = id_gestionnaire;
+  }
+
+  async createGerer() {
+    await client.connect();
+    await client.query(
+      `INSERT INTO gerer (id_equipement, id_gestionnaire)  
+      value ($1,$2)`,
+      [this.id_equipement, this.id_gestionnaire]
+    );
+    client.end();
+  }
+
+  async deleteGerer() {
+    await client.connect();
+    await client.query(
+      `DELETE FROM gerer WHERE id_equipement = $1 AND id_gestionnaire = $2`,
+      [this.id_equipement, this.id_gestionnaire]
+    )
+    client.end();
+  }
+}
+
 
