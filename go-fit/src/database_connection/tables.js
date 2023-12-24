@@ -1,6 +1,5 @@
 const client = require("./connection");
 
-
 class Abonnement {
   constructor(
     nomAbonnement,
@@ -119,19 +118,7 @@ class Assister {
 }
 ;
 class Client {
-  constructor(nom_client,
-    prenom,
-    mot_de_passe,
-    id_abonnement,
-    id_entraineur,
-    photo_client,
-    telephone_client,
-    date_naissance,
-    sexe,
-    poids,
-    taille,
-    date_inscription,
-    etat,
+  constructor(nom_client, prenom, mot_de_passe, id_abonnement, id_entraineur, photo_client, telephone_client, date_naissance, sexe, poids, taille, date_inscription, etat,
     motivation,
     objectif,
     type_entrainement,
@@ -237,7 +224,7 @@ class Employe {
 }
 ;
 class Entrainement {
-  constructor(id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session) {
+  constructor(id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, effectif_max, nom_session) {
     this.id_gestionnaire = id_gestionnaire;
     this.id_salle = id_salle;
     this.id_entraineur = id_entraineur;
@@ -245,14 +232,15 @@ class Entrainement {
     this.jour_de_la_semaine = jour_de_la_semaine;
     this.debut = debut;
     this.fin = fin;
+    this.effectif_max = effectif_max;
     this.nom_session = nom_session;
   }
   async createEntrainement() {
     await client.connect();
     await client.query(
-      `INSERT INTO entrainement (id_gestionnaire, id_salle, id_entraineur,date_session, jour_de_la_semaine, debut, fin, nom_session)  
+      `INSERT INTO entrainement (id_gestionnaire, id_salle, id_entraineur,date_session, jour_de_la_semaine, debut, fin,effectif_max  ,nom_session)  
       value ($1,$2,$3,$4,$5,$6,$7,$8)`,
-      [this.id_gestionnaire, this.id_salle, this.id_entraineur, this.date_session, this.jour_de_la_semaine, this.debut, this.fin, this.nom_session]
+      [this.id_gestionnaire, this.id_salle, this.id_entraineur, this.date_session, this.jour_de_la_semaine, this.debut, this.fin, this.effectif_max, this.nom_session]
     );
     client.end();
 
@@ -275,6 +263,7 @@ class Entrainement {
     jour_de_la_semaine = this.jour_de_la_semaine,
     debut = this.debut,
     fin = this.fin,
+    effectif_max = this.effectif_max,
     nom_session = this.nom_session
   ) {
     let id;
@@ -287,7 +276,7 @@ class Entrainement {
     id = res[0].id_session_entrainement;
 
     await client.query('UPDATE entrainement SET id_gestionnaire = $1, id_salle = $2, id_entraineur = $3,date_session = $4, jour_de_la_semaine = $5, debut = $6, fin = $7, nom_session = $8 WHERE id_session_entrainement = $9',
-      [id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, nom_session, id]);
+      [id_gestionnaire, id_salle, id_entraineur, date_session, jour_de_la_semaine, debut, fin, effectif_max, nom_session, id]);
     client.end();
 
   }
