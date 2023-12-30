@@ -89,24 +89,6 @@ CREATE INDEX ENTRAINER_FK ON CLIENT (
 ID_ENTRAINEUR
 );
 
-/*==============================================================*/
-/* Table: EMPLOYE                                               */
-/*==============================================================*/
-CREATE TABLE EMPLOYE (
-   ID_EMPLOYE SERIAL START 1 INCREMENT 1 NOT NULL,
-   NOM_EMPLOYE CHAR(50) NULL,
-   PRENOM_EMPLOYE CHAR(50) NULL,
-   SEXE CHAR(1) NULL,
-   PHOTO_EMPLOYE BYTEA NULL ADRESSE_EMPLOYE CHAR(50) NULL,
-   CONSTRAINT PK_EMPLOYE PRIMARY KEY (ID_EMPLOYE)
-);
-
-/*==============================================================*/
-/* Index: EMPLOYE_PK                                            */
-/*==============================================================*/
-CREATE UNIQUE INDEX EMPLOYE_PK ON EMPLOYE (
-ID_EMPLOYE
-);
 
 /*==============================================================*/
 /* Table: ENTRAINEMENT                                          */
@@ -164,28 +146,25 @@ ID_GESTIONNAIRE
 /*==============================================================*/
 CREATE TABLE ENTRAINEUR (
    ID_ENTRAINEUR SERIAL START 1 INCREMENT 1 NOT NULL,
-   ID_EMPLOYE INT4 NULL,
+   NOM_ENTRAINEUR CHAR(50) NULL,
+   PRENOM_ENTRAINEUR CHAR(50) NULL,
+   SEXE_ENTRAINEUR CHAR(1) NULL,
+   PHOTO_ENTRAINEUR BYTEA NULL,
+   ADRESSE_ENTRAINEUR CHAR(50) NULL,
    ADRESSE_MAIL_ENTRAINEUR CHAR(50) NOT NULL,
    MOT_DE_PASSE CHAR(30),
    ETAT CHAR(1),
    PHRASE_ACCROCHE_ENTRAINEUR CHAR(255) NULL,
-   CONSTRAINT PK_ENTRAINEUR PRIMARY KEY (ID_EMPLOYE, ID_ENTRAINEUR)
+   CONSTRAINT PK_ENTRAINEUR PRIMARY KEY (ID_ENTRAINEUR)
 );
 
 /*==============================================================*/
 /* Index: ENTRAINEUR_PK                                         */
 /*==============================================================*/
 CREATE UNIQUE INDEX ENTRAINEUR_PK ON ENTRAINEUR (
-ID_EMPLOYE,
 ID_ENTRAINEUR
 );
 
-/*==============================================================*/
-/* Index: INHERITANCE_2_FK                                      */
-/*==============================================================*/
-CREATE INDEX INHERITANCE_2_FK ON ENTRAINEUR (
-ID_EMPLOYE
-);
 
 /*==============================================================*/
 /* Table: EQUIPEMENT                                            */
@@ -244,25 +223,21 @@ ID_PAIEMENT
 /*==============================================================*/
 CREATE TABLE GESTIONNAIRE (
    ID_GESTIONNAIRE SERIAL START 1 INCREMENT 1 NOT NULL,
-   ID_EMPLOYE INT4 NULL,
+   NOM_GESTIONNAIRE CHAR(50) NOT NULL,
+   PRENOM_GESTIONNAIRE CHAR(50) NOT NULL,
+   SEXE_GESTIONNAIRE CHAR(1)  NULL,
+   PHOTO_GESTIONNAIRE CHAR(255) NULL,
+   ADRESSE_GESTIONNAIRE CHAR(50) NULL,
    ADRESSE_MAIL_GESTIONNAIRE CHAR(50),
    MOT_DE_PASSE CHAR(30),
-   CONSTRAINT PK_GESTIONNAIRE PRIMARY KEY (ID_EMPLOYE, ID_GESTIONNAIRE)
+   CONSTRAINT PK_GESTIONNAIRE PRIMARY KEY (ID_GESTIONNAIRE)
 );
 
 /*==============================================================*/
 /* Index: GESTIONNAIRE_PK                                       */
 /*==============================================================*/
 CREATE UNIQUE INDEX GESTIONNAIRE_PK ON GESTIONNAIRE (
-ID_EMPLOYE,
 ID_GESTIONNAIRE
-);
-
-/*==============================================================*/
-/* Index: HERITAGE_2_FK                                         */
-/*==============================================================*/
-CREATE INDEX HERITAGE_2_FK ON GESTIONNAIRE (
-ID_EMPLOYE
 );
 
 /*==============================================================*/
