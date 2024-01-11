@@ -5,9 +5,9 @@ const { Client } = require("pg");
 const client = new Client({
   user: "postgres",
   host: "localhost",
-  database: "go_fit",
+  database: "demo",
   password: "root",
-  port: 5432,
+  port: 5000,
 });
 
 client.on("connect", () => {
@@ -17,5 +17,8 @@ client.on("connect", () => {
 client.on("end", () => {
   console.log("Disconnected");
 });
+
+
+
 
 module.exports = client;
