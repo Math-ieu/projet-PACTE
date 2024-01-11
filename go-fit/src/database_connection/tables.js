@@ -701,3 +701,4 @@ class Gerer {
 }
 
 
+module.exports = Abonnement
