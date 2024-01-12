@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Type_equipement.init({
-    ID_TYPE_EQUIPEMENT: DataTypes.INTEGER,
     NOM_TYPE_EQUIPEMENT: DataTypes.STRING,
     QTE_EQUIPEMENT: DataTypes.INTEGER
   }, {

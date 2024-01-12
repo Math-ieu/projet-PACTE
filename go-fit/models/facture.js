@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Facture.init({
-    ID_FACTURE: DataTypes.INTEGER,
     NOM_FACTURE: DataTypes.STRING,
     MONTANT_FACTURE: DataTypes.FLOAT,
     DATE_LIMITE_FACTURE: DataTypes.DATE,

@@ -3,25 +3,26 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Factures', {
-      id: {
+      ID_FACTURE: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ID_FACTURE: {
-        type: Sequelize.INTEGER
-      },
       NOM_FACTURE: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       MONTANT_FACTURE: {
+        allowNull: false,
         type: Sequelize.FLOAT
       },
       DATE_LIMITE_FACTURE: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       ETAT_FACTURE: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       createdAt: {

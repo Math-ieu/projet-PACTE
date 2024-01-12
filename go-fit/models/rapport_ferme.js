@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Rapport_ferme.init({
-    ID_RAPPORT_FERME: DataTypes.INTEGER,
     ID_ENTRAINEMENT_FERME: DataTypes.INTEGER,
     NOM_RAPPORT: DataTypes.STRING,
     FICHIER_RAPPORT: DataTypes.STRING,

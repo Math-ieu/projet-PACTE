@@ -3,16 +3,12 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Affecter_ouverts', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
       ID_TYPE_EQUIPEMENT: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       ID_ENTRAINEMENT_OUVERT: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       QTE_AFFECTER: {

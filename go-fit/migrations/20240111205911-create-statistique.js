@@ -3,22 +3,22 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Statistiques', {
-      id: {
+      ID_STATISTIQUE: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ID_STATISTIQUE: {
-        type: Sequelize.INTEGER
-      },
       ID_RAPPORT: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       NOM_STATISTIQUE: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       FICHIER_STATISTIQUE: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {

@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Entrainement_ouvert.init({
-    ID_ENTRAINEMENT_OUVERT: DataTypes.INTEGER,
     ID_GESTIONNAIRE: DataTypes.INTEGER,
     ID_SALLE: DataTypes.INTEGER,
     ID_ENTRAINEUR: DataTypes.INTEGER,

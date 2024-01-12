@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Rapport_ouvert.init({
-    ID_RAPPORT_OUVERT: DataTypes.INTEGER,
     ID_ENTRAINEMENT_OUVERT: DataTypes.INTEGER,
     NOM_RAPPORT: DataTypes.STRING,
     FICHIER_RAPPORT: DataTypes.STRING,

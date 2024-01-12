@@ -3,16 +3,14 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Abonnements', {
-      id: {
+      ID_ABONNEMENT: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ID_ABONNEMENT: {
-        type: Sequelize.INTEGER
-      },
       NOM_ABONNEMENT: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       TYPE_ABONNEMENT: {

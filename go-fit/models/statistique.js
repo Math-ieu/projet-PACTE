@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Statistique.init({
-    ID_STATISTIQUE: DataTypes.INTEGER,
     ID_RAPPORT: DataTypes.INTEGER,
     NOM_STATISTIQUE: DataTypes.STRING,
     FICHIER_STATISTIQUE: DataTypes.STRING

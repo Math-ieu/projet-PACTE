@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Abonnement.init({
-    ID_ABONNEMENT: DataTypes.INTEGER,
     NOM_ABONNEMENT: DataTypes.STRING,
     TYPE_ABONNEMENT: DataTypes.STRING,
     MONTANT_ABONNEMENT: DataTypes.FLOAT

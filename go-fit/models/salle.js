@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Salle.init({
-    ID_SALLE: DataTypes.INTEGER,
     NOM_SALLE: DataTypes.STRING,
     ETAT: DataTypes.STRING
   }, {

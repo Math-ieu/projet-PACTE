@@ -49,10 +49,10 @@ CREATE TABLE ASSISTER_FERME (
 /* Table: CLIENT                                                */
 /*==============================================================*/
 CREATE TABLE CLIENT (
+   ID_CLIENT SERIAL NOT NULL,
    NOM_CLIENT CHAR(30) NOT NULL,
    PRENOM CHAR(50) NOT NULL,
    MOT_DE_PASSE CHAR(30) NULL,
-   ID_CLIENT SERIAL NOT NULL,
    ID_ABONNEMENT INT4 NULL,
    ID_ENTRAINEUR INT4 NULL,
    PHOTO_CLIENT CHAR NULL,

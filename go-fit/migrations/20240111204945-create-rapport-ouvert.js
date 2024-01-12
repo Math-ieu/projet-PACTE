@@ -3,25 +3,26 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Rapport_ouverts', {
-      id: {
+      ID_RAPPORT_OUVERT: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ID_RAPPORT_OUVERT: {
-        type: Sequelize.INTEGER
-      },
       ID_ENTRAINEMENT_OUVERT: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       NOM_RAPPORT: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       FICHIER_RAPPORT: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       DATE_RAPPORT: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       createdAt: {

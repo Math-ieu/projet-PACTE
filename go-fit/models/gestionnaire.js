@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Gestionnaire.init({
-    ID_GESTIONNAIRE: DataTypes.INTEGER,
     NOM_GESTIONNAIRE: DataTypes.STRING,
     PRENOM_GESTIONNAIRE: DataTypes.STRING,
     SEXE_GESTIONNAIRE: DataTypes.STRING,

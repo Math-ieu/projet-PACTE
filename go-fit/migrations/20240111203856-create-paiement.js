@@ -3,28 +3,30 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Paiements', {
-      id: {
+      ID_PAIEMENT: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ID_PAIEMENT: {
-        type: Sequelize.INTEGER
-      },
       ID_FACTURE: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       ID_CLIENT: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       NOM_PAIEMENT: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       MONTANT_PAIEMENT: {
+        allowNull: false,
         type: Sequelize.FLOAT
       },
       DATE_PAIEMENT: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       createdAt: {
