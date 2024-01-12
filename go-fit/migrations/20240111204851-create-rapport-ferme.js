@@ -11,7 +11,11 @@ module.exports = {
       },
       ID_ENTRAINEMENT_FERME: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Entrainement_fermes",
+          key: "ID_ENTRAINEMENT_FERME"
+        }
       },
       NOM_RAPPORT: {
         allowNull: false,

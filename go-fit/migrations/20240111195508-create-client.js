@@ -23,11 +23,19 @@ module.exports = {
       },
       ID_ABONNEMENT: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Abonnements",
+          key: "ID_ABONNEMENT"
+        }
       },
       ID_ENTRAINEUR: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Entraineurs",
+          key: "ID_ENTRAINEUR"
+        }
       },
       PHOTO_CLIENT: {
         allowNull: true,

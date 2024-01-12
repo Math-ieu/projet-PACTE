@@ -55,4 +55,6 @@ npx sequelize-cli model:generate --name Rapport_ouvert --attributes ID_RAPPORT_O
 
 npx sequelize-cli model:generate --name Salle --attributes ID_SALLE:integer,NOM_SALLE:string,ETAT:string
 
-npx sequelize-cli model:generate --name Statistique --attributes ID_STATISTIQUE:integer,ID_RAPPORT:integer,NOM_STATISTIQUE:string,FICHIER_STATISTIQUE:string
+npx sequelize-cli model:generate --name Statistique_ouvert --attributes ID_STATISTIQUE_OUVERT:integer,ID_RAPPORT_OUVERT:integer,NOM_STATISTIQUE:string,FICHIER_STATISTIQUE:string
+
+npx sequelize-cli model:generate --name Statistique_ferme --attributes ID_STATISTIQUE_FERME:integer,ID_RAPPORT_FERME:integer,NOM_STATISTIQUE:string,FICHIER_STATISTIQUE:string

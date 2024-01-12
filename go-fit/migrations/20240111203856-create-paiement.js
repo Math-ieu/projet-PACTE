@@ -11,11 +11,19 @@ module.exports = {
       },
       ID_FACTURE: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Factures",
+          key: "ID_FACTURE"
+        }
       },
       ID_CLIENT: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Clients",
+          key: "ID_CLIENT"
+        }
       },
       NOM_PAIEMENT: {
         allowNull: false,

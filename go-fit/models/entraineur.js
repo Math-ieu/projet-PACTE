@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 const {
   Model
 } = require('sequelize');
@@ -19,8 +20,22 @@ module.exports = (sequelize, DataTypes) => {
     SEXE_ENTRAINEUR: DataTypes.STRING,
     PHOTO_ENTRAINEUR: DataTypes.STRING,
     ADRESSE_ENTRAINEUR: DataTypes.STRING,
-    ADRESSE_MAIL_ENTRAINEUR: DataTypes.STRING,
-    MOT_DE_PASSE: DataTypes.STRING,
+    ADRESSE_MAIL_ENTRAINEUR: {
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: true
+      }
+    },
+    MOT_DE_PASSE: {
+      type: DataTypes.STRING,
+      get() {
+        const rawValue = this.getDataValue('MOT_DE_PASSE');
+        return rawValue;
+      },
+      set(value) {
+        this.setDataValue('MOT_DE_PASSE', bcrypt.hash(value, 10));
+      }
+    },
     ETAT: DataTypes.STRING,
     PHRASE_ACCROCHE_ENTRAINEUR: DataTypes.STRING
   }, {

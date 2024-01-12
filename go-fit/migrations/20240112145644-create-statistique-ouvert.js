@@ -2,16 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Statistiques', {
-      ID_STATISTIQUE: {
+    await queryInterface.createTable('Statistique_ouverts', {
+      ID_STATISTIQUE_OUVERT: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ID_RAPPORT: {
+      ID_RAPPORT_OUVERT: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Rapport_ouverts",
+          key: "ID_RAPPORT_OUVERT"
+        }
       },
       NOM_STATISTIQUE: {
         allowNull: false,
@@ -32,6 +36,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Statistiques');
+    await queryInterface.dropTable('Statistique_ouverts');
   }
 };

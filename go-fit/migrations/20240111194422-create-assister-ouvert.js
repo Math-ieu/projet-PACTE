@@ -5,11 +5,19 @@ module.exports = {
     await queryInterface.createTable('Assister_ouverts', {
       ID_CLIENT: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Clients",
+          key: "ID_CLIENT"
+        }
       },
       ID_ENTRAINEMENT_OUVERT: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Entrainement_ouverts",
+          key: "ID_ENTRAINEMENT_OUVERT"
+        }
       },
       createdAt: {
         allowNull: false,

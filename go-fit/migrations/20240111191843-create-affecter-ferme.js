@@ -5,11 +5,19 @@ module.exports = {
     await queryInterface.createTable('Affecter_fermes', {
       ID_TYPE_EQUIPEMENT: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Type_equipements",
+          key: "ID_TYPE_EQUIPEMENT"
+        }
       },
       ID_ENTRAINEMENT_FERME: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Entrainements_fermes",
+          key: "ID_ENTRAINEMENT_FERME"
+        }
       },
       QTE_AFFECTER: {
         type: Sequelize.INTEGER

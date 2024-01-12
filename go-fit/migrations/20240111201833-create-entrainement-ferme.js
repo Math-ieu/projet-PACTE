@@ -11,15 +11,28 @@ module.exports = {
       },
       ID_GESTIONNAIRE: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Gestionnaires",
+          key: "ID_GESTIONNAIRE"
+        }
+
       },
       ID_SALLE: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Salles",
+          key: "ID_SALLE"
+        }
       },
       ID_ENTRAINEUR: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Entraineurs",
+          keys: "ID_ENTRAINEUR"
+        }
       },
       DATE_SESSION: {
         allowNull: false,
