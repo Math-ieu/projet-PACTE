@@ -6,10 +6,6 @@ module.exports = {
       ID_TYPE_EQUIPEMENT: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "Type_equipements",
-          key: "ID_TYPE_EQUIPEMENT"
-        }
       },
       ID_ENTRAINEMENT_FERME: {
         allowNull: false,
