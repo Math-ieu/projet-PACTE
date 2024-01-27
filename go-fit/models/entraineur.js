@@ -28,19 +28,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     MOT_DE_PASSE: {
       type: DataTypes.STRING,
-      get() {
-        const rawValue = this.getDataValue('MOT_DE_PASSE');
-        return rawValue;
-      },
-      set(value) {
-        this.setDataValue('MOT_DE_PASSE', bcrypt.hash(value, 10));
-      }
     },
     ETAT: DataTypes.STRING,
     PHRASE_ACCROCHE_ENTRAINEUR: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Entraineur',
+    timestamps: true,
+    underscored: true
   });
   return Entraineur;
 };
